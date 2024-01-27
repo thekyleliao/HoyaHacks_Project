@@ -1,36 +1,31 @@
+# Imports stuff
 import taipy as tp
 from taipy import Config, Core, Gui
 
 
-################################################################
-#            Configure application                             #
-################################################################
-def build_message(name):
-    return f"You are {name} years old!"
+# Function that builds a message from input
+def build_message(age):
+    return f"You are {age} years old!"
 
 
-# A first data node configuration to model an input name.
+# Config stuff
 input_name_data_node_cfg = Config.configure_data_node(id="input_name")
-# A second data node configuration to model the message to display.
 message_data_node_cfg = Config.configure_data_node(id="age")
-# A task configuration to model the build_message function.
 build_msg_task_cfg = Config.configure_task("build_msg", build_message, input_name_data_node_cfg, message_data_node_cfg)
-# The scenario configuration represents the whole execution graph.
 scenario_cfg = Config.configure_scenario("scenario", task_configs=[build_msg_task_cfg])
 
-################################################################
-#            Design graphical interface                        #
-################################################################
-
+# Variables
 input_name = "18"
 age = None
 
 
+# no clue what this does
 def submit_scenario(state):
     state.scenario.input_name.write(state.input_name)
     state.scenario.submit()
-    state.message = scenario.message.read()
+    state.age = scenario.age.read()
 
+# Formats the page
 page = """
 Enter your age: <|{input_name}|input|>
 
@@ -39,19 +34,8 @@ Enter your age: <|{input_name}|input|>
 Message: <|{age}|text|>
 """
 
+# Runs the application
 if __name__ == "__main__":
-    ################################################################
-    #            Instantiate and run Core service                  #
-    ################################################################
     Core().run()
-
-    ################################################################
-    #            Manage scenarios and data nodes                   #
-    ################################################################
     scenario = tp.create_scenario(scenario_cfg)
-
-    ################################################################
-    #            Instantiate and run Gui service                   #
-    ################################################################
-
     Gui(page).run()
