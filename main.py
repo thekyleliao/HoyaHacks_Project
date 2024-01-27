@@ -1,8 +1,10 @@
 from taipy.gui import Gui
+import taipy as tp
 from PIL import Image
 from io import BytesIO
 from exif import Image as ExifImage
 import os
+
 
 def create_image(image_path):
     image_format = "PNG"
@@ -68,10 +70,22 @@ DateTime: <|{new_datetime}|input|>
 
 Location: <|{new_location}|input|>
 
+
+<iframe width="600" height="400" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"
+        src="https://www.openstreetmap.org/export/embed.html?bbox=<{long}|text|,<{lat}|text|>,<{long}|text|>,<{lat}|text|>&layer=mapnik">
+</iframe>
+
 <|{None}|file_download|label=Download|on_action=create_new_file|>
 
 <|
 """
+
+def dms_to_decimal(degrees, minutes, seconds, direction):
+    decimal_degrees = float(degrees) + float(minutes)/60 + float(seconds)/(60*60)
+    if direction == 'S' or direction == 'W':
+        decimal_degrees = -decimal_degrees
+    return decimal_degrees
+
 
 def upload_file(state):
     state.image = create_image(state.content)
@@ -91,8 +105,24 @@ def get_metadata(state):
     longitude, longitude_ref = img.get("gps_longitude"), img.get("gps_longitude_ref")
     altitude = img.get("gps_altitude")
 
-    state.location = str(int(latitude[0])) + "°" + str(int(latitude[1])) + "'" + str(latitude[2]) + "\"" + latitude_ref + " "
-    state.location += str(int(longitude[0])) + "°" + str(int(longitude[1])) + "'" + str(longitude[2]) + "\"" + longitude_ref
+    state.location = str(int(latitude[0])) + "'" + str(int(latitude[1])) + "'" + str(latitude[2]) + "\"" + latitude_ref + " "
+    state.location += str(int(longitude[0])) + "'" + str(int(longitude[1])) + "'" + str(longitude[2]) + "\"" + longitude_ref
+
+    latitude_deg = int(latitude.split("'")[0])
+    latitude_min = int(latitude.split("'")[1].split("'")[0])
+    latitude_sec = float(latitude.split("'")[1].replace(' ', '').replace('"', ''))
+
+    longitude_deg = int(longitude.split("'")[0])
+    longitude_min = int(longitude.split("'")[1].split("'")[0])
+    longitude_sec = float(longitude.split("'")[1].replace(' ', '').replace('"', ''))
+
+
+    latDecimal = dms_to_decimal(latitude_deg, latitude_min, latitude_sec, latitude_ref)
+    longitude_decimal = dms_to_decimal(longitude_deg, longitude_min, longitude_sec, longitude_ref)
+
+    iframe_code = f"""<iframe width="600" height="400" frameborder="0" src="https://www.openstreetmap.org/export/embed.html?bbox={state.long},{state.lat},{state.long},{state.lat}&layer=mapnik"></iframe>"""
+    state.iframe.value = iframe_code
+
 
 def create_new_file(state):
     with open(state.content, "rb") as input_file:
