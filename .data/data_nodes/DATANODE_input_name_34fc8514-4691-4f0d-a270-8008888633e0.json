@@ -1,0 +1,56 @@
+{
+"id": "DATANODE_input_name_34fc8514-4691-4f0d-a270-8008888633e0",
+"config_id": "input_name",
+"scope": "<Scope.SCENARIO: 1>",
+"storage_type": "pickle",
+"name": null,
+"owner_id": "SCENARIO_scenario_e3fa2a8b-0000-4ebf-b1d6-9407c170c77d",
+"parent_ids": [
+"TASK_build_msg_94ad6aff-ec78-454c-b93c-dbb8b32e36ed"
+],
+"last_edit_date": "2024-01-26T22:35:58.252565",
+"edits": [
+{
+"timestamp": "2024-01-26T22:35:49.470838"
+},
+{
+"timestamp": "2024-01-26T22:35:50.669218"
+},
+{
+"timestamp": "2024-01-26T22:35:51.640609"
+},
+{
+"timestamp": "2024-01-26T22:35:52.471400"
+},
+{
+"timestamp": "2024-01-26T22:35:53.384738"
+},
+{
+"timestamp": "2024-01-26T22:35:54.243736"
+},
+{
+"timestamp": "2024-01-26T22:35:54.958068"
+},
+{
+"timestamp": "2024-01-26T22:35:55.863976"
+},
+{
+"timestamp": "2024-01-26T22:35:56.723565"
+},
+{
+"timestamp": "2024-01-26T22:35:57.495658"
+},
+{
+"timestamp": "2024-01-26T22:35:58.252565"
+}
+],
+"version": "7b01965e-03a0-4f11-bdb3-e6b3e0ced38c",
+"validity_days": null,
+"validity_seconds": null,
+"edit_in_progress": false,
+"editor_id": null,
+"editor_expiration_date": null,
+"data_node_properties": {
+"is_generated": true
+}
+}
