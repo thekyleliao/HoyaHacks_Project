@@ -3,6 +3,7 @@ from exif import Image as ExifImage
 filename = "image.jpg"
 
 EXIF_TAGS = [
+    "artist",
     "make",
     "model",
     "datetime_original",
@@ -15,6 +16,8 @@ EXIF_TAGS = [
 
 with open(filename, "rb") as input_file:
     img = ExifImage(input_file)
+
+img.artist = "Sahib"
 
 for tag in EXIF_TAGS:
     value = img.get(tag)
