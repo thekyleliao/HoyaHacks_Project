@@ -38,16 +38,19 @@ new_datetime = ""
 new_location = ""
 
 page = """
+<|container|
+<|text-center|
+<|card|
 # CTFpy
 ### Upload images here and see their metadata
 
 <|{content}|file_selector|label=Upload Image|extensions=.png,.jpg|on_action=upload_file|>
 
-<|{image}|image|>
+<|{image}|image|width=10vw|>
 
 ### Metadata
 
-Make: <|{make}|text|>
+<center>Make: <|{make}|text|></center>
 
 Model: <|{model}|text|>
 
