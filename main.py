@@ -1,8 +1,10 @@
 from taipy.gui import Gui
+import taipy as tp
 from PIL import Image
 from io import BytesIO
 from exif import Image as ExifImage
 import os
+
 
 def create_image(image_path):
     image_format = "PNG"
@@ -27,16 +29,19 @@ new_datetime = ""
 new_location = ""
 
 page = """
+<|container|
+<|text-center|
+<|card|
 # CTFpy
 ### Upload images here and see their metadata
 
 <|{content}|file_selector|label=Upload Image|extensions=.png,.jpg|on_action=upload_file|>
 
-<|{image}|image|>
+<|{image}|image|width=10vw|>
 
 ### Metadata
 
-Make: <|{make}|text|>
+<center>Make: <|{make}|text|></center>
 
 Model: <|{model}|text|>
 
@@ -59,9 +64,17 @@ Location: <|{new_location}|input|>
 <|{content}|file_download|label=Download|>
 """
 
+def dms_to_decimal(degrees, minutes, seconds, direction):
+    decimal_degrees = float(degrees) + float(minutes)/60 + float(seconds)/(60*60)
+    if direction == 'S' or direction == 'W':
+        decimal_degrees = -decimal_degrees
+    return decimal_degrees
+
+
 def upload_file(state):
     state.image = create_image(state.content)
     get_metadata(state)
+
 
 def get_metadata(state):
     with open(state.content, "rb") as input_file:
@@ -77,8 +90,9 @@ def get_metadata(state):
     longitude, longitude_ref = img.get("gps_longitude"), img.get("gps_longitude_ref")
     altitude = img.get("gps_altitude")
 
-    state.location = str(int(latitude[0])) + "°" + str(int(latitude[1])) + "'" + str(latitude[2]) + "\"" + latitude_ref + " "
-    state.location += str(int(longitude[0])) + "°" + str(int(longitude[1])) + "'" + str(longitude[2]) + "\"" + longitude_ref
+    state.location = str(int(latitude[0])) + "'" + str(int(latitude[1])) + "'" + str(latitude[2]) + "\"" + latitude_ref + " "
+    state.location += str(int(longitude[0])) + "'" + str(int(longitude[1])) + "'" + str(longitude[2]) + "\"" + longitude_ref
+
 
 def create_new_file(state):
     with open(state.content, "rb") as input_file:
