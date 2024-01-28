@@ -16,17 +16,6 @@ def create_image(image_path):
 content = ""
 image = create_image("placeholder_image.png")
 
-exif_tags = [
-    "make",
-    "model",
-    "datetime_original",
-    "gps_latitude",
-    "gps_latitude_ref",
-    "gps_longitude",
-    "gps_longitude_ref",
-    "gps_altitude",
-]
-
 make = ""
 model = ""
 datetime = ""
@@ -65,9 +54,9 @@ DateTime: <|{new_datetime}|input|>
 
 Location: <|{new_location}|input|>
 
-<|{None}|file_download|label=Download|on_action=create_new_file|>
+<|Create File|button|on_action=create_new_file|>
 
-<|
+<|{content}|file_download|label=Download|>
 """
 
 def upload_file(state):
@@ -116,8 +105,6 @@ def create_new_file(state):
 
     with open(state.content, "wb") as output_file:
         output_file.write(img.get_file())
-    
-    Download(state, content = bytes(output_file, "UFT-8"))
 
 
 if __name__ == "__main__":
